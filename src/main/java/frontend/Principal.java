@@ -5,11 +5,14 @@
  */
 package frontend;
 
+import Clases.Id;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -41,7 +44,6 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         subtitle = new javax.swing.JLabel();
-        selec = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         area = new javax.swing.JTextArea();
         selecconar = new javax.swing.JButton();
@@ -54,6 +56,9 @@ public class Principal extends javax.swing.JFrame {
         mostrarLight = new javax.swing.JLabel();
         tokens = new javax.swing.JButton();
         errores = new javax.swing.JButton();
+        selec = new javax.swing.JTextField();
+        buscar = new javax.swing.JButton();
+        limpiar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Analizador Lexico");
@@ -64,9 +69,6 @@ public class Principal extends javax.swing.JFrame {
 
         subtitle.setFont(new java.awt.Font("Noto Sans CJK JP", 1, 24)); // NOI18N
         subtitle.setText("                 Analizador lexico");
-
-        selec.setFont(new java.awt.Font("Noto Sans", 1, 18)); // NOI18N
-        selec.setText("Seleccione el archivo a analizar");
 
         area.setBackground(new java.awt.Color(75, 115, 111));
         area.setColumns(20);
@@ -87,6 +89,11 @@ public class Principal extends javax.swing.JFrame {
         analizar.setBackground(new java.awt.Color(72, 113, 101));
         analizar.setFont(new java.awt.Font("Noto Sans", 1, 15)); // NOI18N
         analizar.setText("Analizar");
+        analizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                analizarActionPerformed(evt);
+            }
+        });
 
         importar.setBackground(new java.awt.Color(82, 141, 126));
         importar.setFont(new java.awt.Font("Noto Sans", 1, 16)); // NOI18N
@@ -131,6 +138,7 @@ public class Principal extends javax.swing.JFrame {
 
         mostrarLight.setText("Light Mode");
 
+        tokens.setBackground(new java.awt.Color(87, 138, 120));
         tokens.setText("Tokens");
         tokens.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -138,10 +146,32 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        errores.setBackground(new java.awt.Color(84, 120, 108));
         errores.setText("Errores");
         errores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 erroresActionPerformed(evt);
+            }
+        });
+
+        selec.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selecActionPerformed(evt);
+            }
+        });
+
+        buscar.setBackground(new java.awt.Color(84, 131, 114));
+        buscar.setText("Buscar Palabra");
+        buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarActionPerformed(evt);
+            }
+        });
+
+        limpiar.setText("Limpiar");
+        limpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                limpiarActionPerformed(evt);
             }
         });
 
@@ -161,24 +191,32 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(salir)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(errores, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                            .addComponent(tokens, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(errores, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
-                                    .addComponent(tokens, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(selec, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(selecconar)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(analizar)
-                                            .addComponent(importar, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addComponent(limpiar)
+                                .addGap(17, 17, 17)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addGap(28, 28, 28)
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(analizar)
+                                                .addComponent(importar, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(selecconar))))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(26, 26, 26)
+                                    .addComponent(selec, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(buscar)))
+                            .addComponent(salir, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(39, 39, 39))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(mostrarLight)
@@ -193,41 +231,43 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(mostrarDark)
                     .addComponent(mostrarLight))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(subtitle, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(dark, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(light, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(selec, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(selecconar)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(subtitle, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(dark, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(light, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(49, 49, 49)
-                        .addComponent(tokens)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(tokens)
                         .addGap(13, 13, 13)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(85, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(85, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(selecconar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(analizar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(importar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(86, 86, 86))
+                                .addGap(86, 86, 86)
+                                .addComponent(salir)
+                                .addGap(31, 31, 31))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(35, 35, 35)
+                                .addGap(22, 22, 22)
                                 .addComponent(errores)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addComponent(salir)
-                        .addGap(31, 31, 31))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(limpiar)
+                                .addGap(53, 53, 53))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(78, 78, 78)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(selec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buscar))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -312,7 +352,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel1.setBackground(Color.decode("#c5d7c3"));
        area.setBackground(Color.decode("#4b736f"));
        subtitle.setForeground(Color.decode("#4b736f"));
-       selec.setForeground(Color.decode("#4b736f"));
+       selec.setBackground(Color.decode("#4b736f"));
        selecconar.setBackground(Color.decode("#3a8b72"));
        selecconar.setForeground(Color.decode("#dedede"));
        analizar.setBackground(Color.decode("#3a8b72"));
@@ -321,6 +361,12 @@ public class Principal extends javax.swing.JFrame {
        importar.setForeground(Color.decode("#dedede"));
        salir.setBackground(Color.decode("#3a8b72"));
        salir.setForeground(Color.decode("#dedede"));
+       tokens.setBackground(Color.decode("#3a8b72"));
+       tokens.setForeground(Color.decode("#dedede"));
+       errores.setBackground(Color.decode("#3a8b72"));
+       errores.setForeground(Color.decode("#dedede"));
+        buscar.setBackground(Color.decode("#3a8b72"));
+       buscar.setForeground(Color.decode("#dedede"));
        dark.setBackground(Color.decode("#27363e"));
        dark.setForeground(Color.decode("#B6E9F0"));
        mostrarDark.setVisible(true);
@@ -336,7 +382,7 @@ public class Principal extends javax.swing.JFrame {
        jPanel1.setBackground(Color.decode("#1E464C"));
        area.setBackground(Color.decode("#1F555D"));
        subtitle.setForeground(Color.decode("#63777A"));
-       selec.setForeground(Color.decode("#63777A"));
+       selec.setBackground(Color.decode("#63777A"));
        selecconar.setBackground(Color.decode("#022F36"));
        selecconar.setForeground(Color.decode("#63777A"));
        analizar.setBackground(Color.decode("#022F36"));
@@ -345,6 +391,12 @@ public class Principal extends javax.swing.JFrame {
        importar.setForeground(Color.decode("#63777A"));
        salir.setBackground(Color.decode("#022F36"));
        salir.setForeground(Color.decode("#63777A"));
+       tokens.setBackground(Color.decode("#022F36"));
+       tokens.setForeground(Color.decode("#63777A"));
+       errores.setBackground(Color.decode("#022F36"));
+       errores.setForeground(Color.decode("#63777A"));
+        buscar.setBackground(Color.decode("#3a8b72"));
+       buscar.setForeground(Color.decode("#dedede"));
        light.setBackground(Color.decode("#B6E9F0"));
        light.setForeground(Color.decode("#27363e"));
        mostrarLight.setForeground(Color.decode("#B6E9F0"));
@@ -355,8 +407,21 @@ public class Principal extends javax.swing.JFrame {
 
     private void tokensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tokensActionPerformed
         Token t1 = new Token();
+        Id i = new Id();
         t1.setVisible(true);
         t1.setLocationRelativeTo(null);
+        String dato=i.nm;
+         if (i.aceptar) {
+            t1.area.setText(area.getText());
+        } else {
+            t1.area.setText("No aceptado");
+        }
+        
+         
+        
+            
+        
+        
         
     }//GEN-LAST:event_tokensActionPerformed
 
@@ -366,6 +431,31 @@ public class Principal extends javax.swing.JFrame {
         e1.setLocationRelativeTo(null);
     }//GEN-LAST:event_erroresActionPerformed
 
+    private void selecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selecActionPerformed
+
+    }//GEN-LAST:event_selecActionPerformed
+
+    private void buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarActionPerformed
+        String texto=selec.getText();
+        String are=area.getText();
+        Pattern busc=Pattern.compile(are);
+        Matcher match = busc.matcher(texto);
+        boolean res = match.matches();
+        if(res){
+            JOptionPane.showMessageDialog(null, texto);
+        }
+    }//GEN-LAST:event_buscarActionPerformed
+
+    private void analizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analizarActionPerformed
+       String dato= area.getText();
+       Id i = new Id();
+       i.inicio(dato);
+    }//GEN-LAST:event_analizarActionPerformed
+
+    private void limpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarActionPerformed
+        area.setText("");
+    }//GEN-LAST:event_limpiarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -373,16 +463,18 @@ public class Principal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton analizar;
     public javax.swing.JTextArea area;
+    private javax.swing.JButton buscar;
     private javax.swing.JButton dark;
     private javax.swing.JButton errores;
     private javax.swing.JButton importar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton light;
+    private javax.swing.JButton limpiar;
     private javax.swing.JLabel mostrarDark;
     private javax.swing.JLabel mostrarLight;
     private javax.swing.JButton salir;
-    private javax.swing.JLabel selec;
+    private javax.swing.JTextField selec;
     private javax.swing.JButton selecconar;
     private javax.swing.JLabel subtitle;
     private javax.swing.JButton tokens;

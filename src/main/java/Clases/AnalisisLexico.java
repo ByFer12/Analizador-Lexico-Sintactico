@@ -14,20 +14,19 @@ import frontend.Principal;
  */
 public class AnalisisLexico {
     char [] cadena;
-    String texto;
+   public static  String texto;
     Principal front;
     public static void main(String[] args) {
         Principal front= new Principal();
+        Id r = new Id();
         front.setVisible(true);
-        AnalisisLexico a = new AnalisisLexico();
-        a.datos();
+        Id p = new Id();
+        texto=front.area.getName();
+         
     }
     /**
      * Metodo que evalua la cadena de datos.
      */
-    public  void datos(){
-        texto=front.area.getName();
-        cadena=texto.toCharArray();
-    }
+ 
 
 }

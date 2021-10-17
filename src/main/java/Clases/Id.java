@@ -5,6 +5,8 @@
  */
 package Clases;
 
+import frontend.*;
+
 import java.util.Scanner;
 
 /**
@@ -18,7 +20,8 @@ public class Id {
      */
     private char car[];
     private int cont = 0;
-    private boolean aceptar = false;
+    public boolean aceptar = true;
+    public String nm;
     /**
      * Retorna el valor de la cadena a evaluar
      * @return 
@@ -26,23 +29,19 @@ public class Id {
     public String getNm() {
         return nm;
     }
-    Scanner ent = new Scanner(System.in);
-    private String nm;
     
+  
+    
+  
     /**
      * Procedimiento Principal
      */
-    public void  inicio() {
-
-        System.out.println("Ingrese una palabra");
-        nm = ent.nextLine();
+    public void  inicio(String dato ) {
+        this.nm=dato;
+       
         car = nm.toCharArray();
         q0();
-        if (aceptar) {
-            System.out.println("La cadena es aceptada: " + nm);
-        } else {
-            System.out.println("La cadena no es valida");
-        }
+       
     }
     /**
      * Estado cero dond einicia
