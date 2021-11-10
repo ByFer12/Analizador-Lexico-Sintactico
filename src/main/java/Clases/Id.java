@@ -18,6 +18,7 @@ public class Id {
     /**
      * @param args the command line arguments
      */
+    private Token id;
     private char car[];
     private int cont = 0;
     public boolean aceptar = true;
