@@ -13,13 +13,15 @@ import frontend.Principal;
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
 public class AnalisisLexico {
+   
     char [] cadena;
    public static  String texto;
     Principal front;
     public static void main(String[] args) {
         Principal front= new Principal();
-        Id r = new Id();
         front.setVisible(true);
+        Id r = new Id();
+        
         Id p = new Id();
         texto=front.area.getName();
          

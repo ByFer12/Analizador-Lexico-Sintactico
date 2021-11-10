@@ -38,5 +38,5 @@
             </plugin>
         </plugins>
     </build>
-    
+    <name>Analizador_Lexico-Sintactico</name>
 </project>
